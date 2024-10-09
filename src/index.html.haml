@@ -1,32 +1,67 @@
-!!!
+!!! 
 %html
   %head
     %meta{:charset => "utf-8"}
-      %title Sample Deployment
-      :css
-        body {
-          color: #ffffff;
-          background-color: #007f3f;
-          font-family: Arial, sans-serif;
-          font-size: 14px;
-        }
-        
-        h1 {
-          font-size: 500%;
-          font-weight: normal;
-          margin-bottom: 0;
-        }
-        
-        h2 {
-          font-size: 200%;
-          font-weight: normal;
-          margin-bottom: 0;
-        }
-    %body
+    %title Rock Paper Scissors Game
+    :css
+      body {
+        color: #ffffff;
+        background-color: #007f3f;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
+      
+      h1 {
+        font-size: 500%;
+        font-weight: normal;
+        margin-bottom: 0;
+      }
+      
+      h2 {
+        font-size: 200%;
+        font-weight: normal;
+        margin-bottom: 0;
+      }
+
+      .button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 120%;
+        cursor: pointer;
+      }
+  %body
     %div{:align => "center"}
-      %h1 Congratulations!
-      %h2 You have successfully completed the second tutorial for AWS CodePipeline.
-      %p
-        For next steps, read the
-        = succeed "." do
-          %a{:href => "http://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html"} AWS CodePipeline Documentation
+      %h1 Rock Paper Scissors!
+      %h2 Make your choice:
+      %div{:id => "choices"}
+        %button.button{:id => "rock"} Rock
+        %button.button{:id => "paper"} Paper
+        %button.button{:id => "scissors"} Scissors
+      %h2{:id => "result"} Choose an option to start the game.
+    :javascript
+      document.getElementById('choices').addEventListener('click', function(e) {
+        if (e.target && e.target.nodeName == 'BUTTON') {
+          playGame(e.target.id);
+        }
+      });
+      
+      function playGame(playerChoice) {
+        const choices = ['rock', 'paper', 'scissors'];
+        const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+        
+        let result = '';
+        if (playerChoice == computerChoice) {
+          result = "It's a tie!";
+        } else if (
+          (playerChoice == 'rock' && computerChoice == 'scissors') ||
+          (playerChoice == 'paper' && computerChoice == 'rock') ||
+          (playerChoice == 'scissors' && computerChoice == 'paper')
+        ) {
+          result = "You win!";
+        } else {
+          result = "You lose!";
+        }
+        
+        document.getElementById('result').innerText = `You chose ${playerChoice}, computer chose ${computerChoice}. ${result}`;
+      }
+
